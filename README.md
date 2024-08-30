@@ -1,9 +1,36 @@
 # open-text-embeddings
 
-重构Dockerfile和新增docker-compose.yml以支持一键部署
-现在可以通过运行`docker-compose up`来构建并启动使用lier007/xiaobu-embedding-v2模型的服务。
+重构`Dockerfile`和新增`docker-compose.yml`以支持一键部署
 
-下为原始README.md文件
+现在可以通过运行`docker-compose up`来构建并启动使用`lier007/xiaobu-embedding-v2`模型的服务。
+
+## 快速启动：
+
+<details>
+  <summary>启动命令</summary>
+
+  ```bash
+  docker run -d -p 8000:8000 ghcr.io/cr-zhichen/cr-zhichen/open-text-embeddings:latest
+  ```
+
+</details>
+
+<details>
+  <summary>docker-compose.yml</summary>
+
+  ```yml
+  version: '3.8'
+
+  services:
+     embedding-server:
+        image: ghcr.io/cr-zhichen/cr-zhichen/open-text-embeddings:latest
+        ports:
+           - "8000:8000"
+  ```
+
+</details>
+
+
 --------
 
 [![PyPI](https://img.shields.io/pypi/v/open-text-embeddings)](https://pypi.org/project/open-text-embeddings/)
