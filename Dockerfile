@@ -1,31 +1,36 @@
-# REF: https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/
-# The download size of `python:3.10-slim-bullseye` is **45MB**¹. Its uncompressed on-disk size is **125MB**¹.
-# (1) The best Docker base image for your Python application (March 2023). https://pythonspeed.com/articles/base-image-python-docker-images/.
-# (2) Reduce the size of container images with DockerSlim. https://developers.redhat.com/articles/2022/01/17/reduce-size-container-images-dockerslim.
-FROM debian:bullseye-slim AS build-image
+# 基于 Python 3.12.4 镜像
+FROM python:3.12.4
 
-ARG MODEL
-ENV MODEL=${MODEL}
+# 设置工作目录
+WORKDIR /app
 
-COPY ./download.sh ./
+# 将当前路径下的所有文件复制到容器的工作目录下
+COPY . .
 
-# Install build dependencies
-RUN apt-get update && \
-    apt-get install -y git-lfs
+# 安装 git 和 git-lfs
+RUN apt-get update && apt-get install -y git git-lfs
 
-RUN chmod +x *.sh && \
-    ./download.sh && \
-    rm *.sh
+# 强制更新 git-lfs 钩子配置
+RUN git lfs update --force
 
-# Stage 3 - final runtime image
-# Grab a fresh copy of the Python image
-FROM public.ecr.aws/lambda/python:3.11
+# 更新 pip 和 setuptools
+RUN pip install --upgrade pip setuptools
 
-ARG MODEL
+# 安装所需的 Python 包
+RUN pip install --no-cache-dir open-text-embeddings[server] sentence-transformers langchain-community
 
-RUN mkdir -p ${MODEL}
-COPY --from=build-image ${MODEL} ${MODEL}
-RUN pip install --upgrade pip setuptools && \
-    pip install --no-cache-dir open-text-embeddings[server] mangum
+# 设置环境变量
+ENV MODEL=lier007/xiaobu-embedding-v2
+ENV DEVICE=cpu
 
-CMD [ "open.text.embeddings.server.aws.handler" ]
+# 赋予执行权限
+RUN chmod +x download.sh
+
+# 下载模型文件
+RUN bash ./download.sh $MODEL
+
+# 暴露端口 8000
+EXPOSE 8000
+
+# 启动服务
+CMD ["python", "-m", "open.text.embeddings.server"]

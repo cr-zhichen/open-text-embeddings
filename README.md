@@ -1,5 +1,13 @@
 # open-text-embeddings
 
+修改Dockerfile.yml文件，并增加了docker-compose.yml文件，用于构建和运行Docker容器。
+
+在Dockerfile.yml中，可以通过修改环境变量的方式，修改需要使用的embeddings模型。
+
+
+下为原始README.md文件
+--------
+
 [![PyPI](https://img.shields.io/pypi/v/open-text-embeddings)](https://pypi.org/project/open-text-embeddings/)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1wfgfkt6xk3meSF5jWHDMqo6mL0ZvPw2f?usp=sharing)
 [![Publish Python Package](https://github.com/limcheekin/open-text-embeddings/actions/workflows/publish.yml/badge.svg)](https://github.com/limcheekin/open-text-embeddings/actions/workflows/publish.yml)
