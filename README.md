@@ -1,9 +1,7 @@
 # open-text-embeddings
 
-修改Dockerfile.yml文件，并增加了docker-compose.yml文件，用于构建和运行Docker容器。
-
-在Dockerfile.yml中，可以通过修改环境变量的方式，修改需要使用的embeddings模型。
-
+重构Dockerfile和新增docker-compose.yml以支持一键部署
+现在可以通过运行`docker-compose up`来构建并启动使用lier007/xiaobu-embedding-v2模型的服务。
 
 下为原始README.md文件
 --------
